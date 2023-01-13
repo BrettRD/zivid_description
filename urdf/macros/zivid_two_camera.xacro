@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Zivid Two Types: Can be accessed globally and used as identifiers -->
+    <xacro:property name="Zivid_Two_M" value="0" scope="global" />
+    <xacro:property name="Zivid_Two_L" value="1" scope="global" />
+
+    <!-- Material Properties -->
+    <material name="zivid_gray">
+        <color rgba="0.25 0.25 0.25 1"/>
+    </material>
+
+    <xacro:macro name="zivid_two_camera" params="prefix type">
+        <!-- Zivid Base Link -->
+        <link name="${prefix}base_link">
+            <!-- Visuals -->
+            <visual>
+                <!-- vendor stl was 
+                    rotated by [90,0,90],
+                    translated by -[39.6,84.532,0],
+                    decimated to 3%
+                -->
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://zivid_description/meshes/visual/zivid-two.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="zivid_gray"/>
+            </visual>
+
+            <!-- Collisions -->
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://zivid_description/meshes/collision/zivid-two-hull.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <!-- Zivid Optical Frame (Measurement Frame)-->
+        <link name="${prefix}optical_frame"/>
+        <!-- Zivid Projector Frame (Projector Optical Frame)-->
+        <link name="${prefix}projector_frame"/>
+
+        <xacro:property name="optical_frame_angle" value="-3" />
+        <xacro:property name="projector_frame_baseline" value="0.11183" />
+        <xacro:property name="projector_frame_angle" value="4" />
+
+        <!-- Zivid Optical (Measurement) Joint -->
+        <joint name="${prefix}optical_joint" type="fixed">
+            <!-- Z dimension of optical center is undefined-->
+            <origin
+                xyz="0.04702 0.05584 0.0445"
+                rpy="0 0 ${optical_frame_angle/180*pi}"
+            />
+            <parent link="${prefix}base_link"/>
+            <child link="${prefix}optical_frame"/>
+        </joint>
+
+        <!-- only projector baseline is defined at 111.83mm, no actual coordinates are documented-->
+        <joint name="${prefix}projector_joint" type="fixed">
+            <!-- projection center is totally undefined-->
+            <origin
+                xyz="0.04702 -0.05584 0.0445"
+                rpy="0 0 ${projector_frame_angle)/180*pi}"
+            />
+            <parent link="${prefix}optical_frame"/>
+            <child link="${prefix}projector_frame"/>
+        </joint>
+    </xacro:macro>
+</robot>
