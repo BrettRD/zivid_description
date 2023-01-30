@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Material Properties -->
+    <material name="zivid_gray">
+        <color rgba="0.25 0.25 0.25 1"/>
+    </material>
+
+    <!-- Bracket to put the zivid on a UR arm -->
+    <xacro:macro name="zivid_onarm" params="prefix">
+
+        <!-- origin of the mesh is the robot tool flange -->
+        <link name="${prefix}arm_link">
+            <!-- Visuals -->
+            <!-- vendor stl was centred on projection frame -->
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://zivid_description/meshes/visual/zivid-onarm.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="zivid_gray"/>
+            </visual>
+
+            <!-- Collisions -->
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://zivid_description/meshes/collision/zivid-onarm-hull.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <!-- the centre of the zivid's bolt pattern-->
+        <link name="${prefix}zivid_link"/>
+
+        <!-- the centre of tool flange, displaced forward by the bracket thickness-->
+        <link name="${prefix}tool_link"/>
+
+
+        <!-- Zivid mounting joint -->
+        <joint name="${prefix}camera_joint" type="fixed">
+            <origin xyz="0 0.065 0.025" rpy="0 -${0.5*pi} -${0.5*pi}"/>
+            <parent link="${prefix}arm_link"/>
+            <child link="${prefix}zivid_link"/>
+        </joint>
+
+
+        <!-- gripper joint -->
+        <joint name="${prefix}tool_joint" type="fixed">
+            <origin xyz="0 0 12.5" rpy="0 0 0"/>
+            <parent link="${prefix}arm_link"/>
+            <child link="${prefix}tool_link"/>
+        </joint>
+
+    </xacro:macro>
+</robot>
