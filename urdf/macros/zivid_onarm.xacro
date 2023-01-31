@@ -2,16 +2,11 @@
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-    <!-- Material Properties -->
-    <material name="zivid_gray">
-        <color rgba="0.25 0.25 0.25 1"/>
-    </material>
-
     <!-- Bracket to put the zivid on a UR arm -->
     <xacro:macro name="zivid_onarm" params="prefix">
 
         <!-- origin of the mesh is the robot tool flange -->
-        <link name="${prefix}arm_link">
+        <link name="${prefix}base_link">
             <!-- Visuals -->
             <!-- vendor stl was centred on projection frame -->
             <visual>
@@ -40,16 +35,16 @@
 
         <!-- Zivid mounting joint -->
         <joint name="${prefix}camera_joint" type="fixed">
-            <origin xyz="0 0.065 0.025" rpy="0 -${0.5*pi} -${0.5*pi}"/>
-            <parent link="${prefix}arm_link"/>
+            <origin xyz="0 0.065 0.026" rpy="0 -${0.5*pi} -${0.5*pi}"/>
+            <parent link="${prefix}base_link"/>
             <child link="${prefix}zivid_link"/>
         </joint>
 
 
         <!-- gripper joint -->
         <joint name="${prefix}tool_joint" type="fixed">
-            <origin xyz="0 0 12.5" rpy="0 0 0"/>
-            <parent link="${prefix}arm_link"/>
+            <origin xyz="0 0 0.0125" rpy="0 0 0"/>
+            <parent link="${prefix}base_link"/>
             <child link="${prefix}tool_link"/>
         </joint>
 

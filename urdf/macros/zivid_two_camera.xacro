@@ -16,11 +16,7 @@
         <link name="${prefix}base_link">
             <!-- Visuals -->
             <visual>
-                <!-- vendor stl was 
-                    rotated by [90,0,90],
-                    translated by -[39.6,84.532,0],
-                    decimated to 3%
-                -->
+                <!-- centered on the 50x50mm bolt pattern -->
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
                     <mesh filename="package://zivid_description/meshes/visual/zivid-two.stl" scale="0.001 0.001 0.001"/>
@@ -50,7 +46,7 @@
         <joint name="${prefix}optical_joint" type="fixed">
             <!-- Z dimension of optical center is undefined-->
             <origin
-                xyz="0.04702 0.05584 0.0445"
+                xyz="0.02302 0.05584 0.0445"
                 rpy="0 0 ${optical_frame_angle/180*pi}"
             />
             <parent link="${prefix}base_link"/>
@@ -61,8 +57,8 @@
         <joint name="${prefix}projector_joint" type="fixed">
             <!-- projection center is totally undefined-->
             <origin
-                xyz="0.04702 -0.05584 0.0445"
-                rpy="0 0 ${projector_frame_angle)/180*pi}"
+                xyz="0.02302 -0.05584 0.0445"
+                rpy="0 0 ${(projector_frame_angle/180)*pi}"
             />
             <parent link="${prefix}optical_frame"/>
             <child link="${prefix}projector_frame"/>
